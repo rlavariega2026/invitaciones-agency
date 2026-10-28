@@ -126,6 +126,10 @@ export interface Template {
   defaultHeadline: string;
   defaultDressCode: string;
   defaultMusic: 'wedding_canon' | 'quince_waltz' | 'kids_cheerful' | 'acoustic_romance' | 'none';
+  primaryColor?: string;
+  fontHeading?: 'Cinzel' | 'Playfair Display' | 'Cormorant Garamond' | 'Plus Jakarta Sans';
+  envelopeAnimation?: EnvelopeAnimationType;
+  entranceButtonDesign?: EntranceButtonDesign;
 }
 
 export interface PricingPlan {
