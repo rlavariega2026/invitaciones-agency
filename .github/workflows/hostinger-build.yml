@@ -37,7 +37,7 @@ jobs:
       - name: Build for Hostinger
         run: npm run build
         env:
-          VITE_BASE_PATH: /invitaciones/
+          VITE_BASE_PATH: /Invitaciones/
 
       - name: Prepare Hostinger folder structure
         run: |
@@ -51,7 +51,7 @@ jobs:
           DirectoryIndex index.html
           <IfModule mod_rewrite.c>
             RewriteEngine On
-            RewriteBase /invitaciones/
+            RewriteBase /Invitaciones/
             RewriteRule ^$ index.html [END]
             RewriteCond %{REQUEST_FILENAME} -f [OR]
             RewriteCond %{REQUEST_FILENAME} -d
@@ -64,7 +64,7 @@ jobs:
           mkdir -p package/invitaciones
           cp -a dist/. package/invitaciones/
           test -f package/invitaciones/index.html
-          grep -q '/invitaciones/assets/' package/invitaciones/index.html
+          grep -q '/Invitaciones/assets/' package/invitaciones/index.html
           test -d package/invitaciones/assets
           echo "Package ready: extract artifact into the domain's public_html root."
 
