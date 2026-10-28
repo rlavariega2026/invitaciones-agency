@@ -160,13 +160,20 @@ export const getStoredTemplates = (): Template[] => {
     }
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed) || parsed.length === 0) return INITIAL_TEMPLATES;
-    const missingTemplates = INITIAL_TEMPLATES.filter((tmpl) => !parsed.some((p: Template) => p.id === tmpl.id));
-    if (missingTemplates.length > 0) {
-      const merged = [...missingTemplates, ...parsed];
-      localStorage.setItem(STORAGE_KEYS.TEMPLATES, JSON.stringify(merged));
-      return merged;
-    }
-    return parsed;
+
+    // Remove the five experimental XV templates that were not approved.
+    const retiredTemplateIds = new Set([
+      'tmpl-xv-cenicienta-cristal',
+      'tmpl-xv-esmeralda-realeza',
+      'tmpl-xv-zafiro-victoriana',
+      'tmpl-xv-diamante-jardín',
+      'tmpl-xv-diamante-mascaras',
+    ]);
+    const approvedStored = parsed.filter((p: Template) => !retiredTemplateIds.has(p.id));
+    const missingTemplates = INITIAL_TEMPLATES.filter((tmpl) => !approvedStored.some((p: Template) => p.id === tmpl.id));
+    const merged = missingTemplates.length > 0 ? [...missingTemplates, ...approvedStored] : approvedStored;
+    localStorage.setItem(STORAGE_KEYS.TEMPLATES, JSON.stringify(merged));
+    return merged;
   } catch {
     return INITIAL_TEMPLATES;
   }
