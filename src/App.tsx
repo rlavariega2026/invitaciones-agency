@@ -126,7 +126,7 @@ export default function App() {
   const handleOpenInvitation = (slug: string) => {
     setActiveInvitationSlug(slug);
     setCurrentView('invitation-view');
-    window.history.pushState({}, '', `${getBasePath()}/i/${encodeURIComponent(slug)}`);
+    window.history.pushState({}, '', `${getBasePath()}/#/invitation/${encodeURIComponent(slug)}`);
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
