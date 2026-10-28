@@ -96,6 +96,8 @@ export const TemplateCatalog: React.FC<TemplateCatalogProps> = ({
     { id: 'luxury_gold', label: 'Oro & Lujo' },
     { id: 'botanical_emerald', label: 'Botánico & Olivo' },
     { id: 'champagne_blush', label: 'Rosa & Champagne' },
+    { id: 'royal_lavender', label: 'Princesa Lavanda' },
+    { id: 'rose_gold', label: 'Rosa Oro Floral' },
     { id: 'midnight_black', label: 'Medianoche' },
     { id: 'celestial_white', label: 'Celestial Marfil' },
     { id: 'boho_terracotta', label: 'Boho Terracota' },
