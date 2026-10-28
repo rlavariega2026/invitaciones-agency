@@ -237,7 +237,10 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
   }
 
   return (
-    <div className={`relative ${isEmbedded ? 'w-full h-full overflow-y-auto' : 'min-h-screen'} bg-neutral-950 text-neutral-100 selection:bg-amber-500/20`}>
+    <div
+      style={{ '--invitation-accent': invitation.primaryColor || '#d4af37' } as React.CSSProperties}
+      className={`relative ${isEmbedded ? 'h-full w-full overflow-y-auto' : isStandalone ? 'min-h-screen w-full' : 'min-h-screen'} bg-neutral-950 text-neutral-100 selection:bg-amber-500/20`}
+    >
       {/* Background celebration particles */}
       <CelebrationParticles type={invitation.particlesEffect || 'petals'} intensity="gentle" isEmbedded={isEmbedded} />
 
@@ -339,47 +342,45 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
       {/* 1. ENVELOPE OPENING OVERLAY (Unsealing experience) */}
       {/* ------------------------------------------------------------- */}
       {!isOpened && (
-        <div className={`${isEmbedded ? 'absolute' : 'fixed'} inset-0 z-40 flex items-center justify-center bg-neutral-950/95 p-4 backdrop-blur-md`}>
-          <div className="relative w-full max-w-md text-center space-y-6">
-            {/* Event Title & Hosts */}
-            <div className="space-y-2">
-              <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold">
-                Tienes una invitación especial
-              </span>
-              <h2 className="font-playfair text-3xl sm:text-4xl font-bold text-white leading-tight">
-                {invitation.title}
-              </h2>
-              <p className="font-cormorant text-lg italic text-neutral-300 max-w-xs mx-auto">
-                {invitation.hostNames}
-              </p>
-            </div>
-
-            {/* Personalized Guest Badge (If guest param is provided in URL) */}
+        <div className={`${isEmbedded ? 'absolute' : 'fixed'} inset-0 z-40 isolate flex min-h-[100dvh] items-end justify-center overflow-hidden bg-neutral-950 text-center`}>
+          <img
+            src={invitation.coverImage}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/20 to-black/90" />
+          <div className="relative z-10 mx-auto flex min-h-[100dvh] w-full max-w-2xl flex-col items-center justify-end px-6 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-16 sm:justify-center sm:pb-12">
+            <span className="mb-4 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/80">
+              Invitación digital · {invitation.category === 'xv_anos' ? 'Mis XV años' : invitation.category.replace(/_/g, ' ')}
+            </span>
+            <h2 className="max-w-xl font-cormorant text-4xl font-medium leading-tight text-white drop-shadow-lg sm:text-6xl">
+              {invitation.title}
+            </h2>
+            <p className="mt-3 max-w-md font-cormorant text-xl italic text-white/90 drop-shadow sm:text-2xl">
+              {invitation.hostNames}
+            </p>
+            <div className="my-5 h-px w-20" style={{ backgroundColor: invitation.primaryColor || '#d4af37' }} />
+            <p className="max-w-sm text-sm tracking-wide text-white/90 drop-shadow">
+              {invitation.eventDate} · {invitation.eventTime} h
+            </p>
             {guestParam.guestName && (
-              <div className="mx-auto max-w-xs rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-center space-y-1">
-                <span className="text-[10px] uppercase tracking-widest text-amber-300 font-mono block">
-                  Pase Personalizado de Honor
-                </span>
-                <p className="text-sm font-bold text-white">
-                  {guestParam.guestName}
-                </p>
-                <p className="text-[11px] text-amber-200/90 font-medium">
-                  {guestParam.guestPasses} {guestParam.guestPasses === 1 ? 'Pase reservado' : 'Pases reservados'}
-                </p>
+              <div className="mt-5 rounded-xl border border-white/30 bg-black/30 px-5 py-3 text-white backdrop-blur-md">
+                <span className="block text-[10px] uppercase tracking-[0.2em] text-white/75">Pase personalizado</span>
+                <p className="mt-1 text-sm font-semibold">{guestParam.guestName}</p>
+                <p className="text-xs text-white/80">{guestParam.guestPasses} {guestParam.guestPasses === 1 ? 'pase reservado' : 'pases reservados'}</p>
               </div>
             )}
-
-            {/* Selected Entrance Button (1 of 12 distinct visual designs) */}
-            <div className="py-2">
+            <div className="mt-7">
               <EntranceButton
                 design={invitation.entranceButtonDesign || (invitation.envelopeAnimation as any) || 'wax_seal'}
-                text={invitation.entranceButtonText || 'Tienes una invitación'}
+                text={invitation.entranceButtonText || 'Abrir invitación'}
                 onClick={handleOpenEnvelope}
               />
             </div>
-
-            <p className="text-[11px] text-neutral-500">
-              {invitation.musicTrackId !== 'none' ? 'Incluye música ambiental y detalles interactivos' : 'Diseñado con elegancia'}
+            <p className="mt-4 text-[10px] uppercase tracking-[0.18em] text-white/65">
+              {invitation.musicTrackId !== 'none' ? 'Toca para abrir · Música y detalles interactivos' : 'Toca para abrir la invitación'}
             </p>
           </div>
         </div>
@@ -388,23 +389,23 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
       {/* ------------------------------------------------------------- */}
       {/* 2. INVITATION CONTENT CONTAINER */}
       {/* ------------------------------------------------------------- */}
-      <div className={`mx-auto transition-all duration-300 ${isEmbedded ? 'max-w-md py-6 px-3' : deviceFrameMode === 'mobile' ? 'max-w-md py-16 px-3' : 'max-w-4xl py-20 px-6'}`}>
-        <article className="overflow-hidden rounded-3xl border border-neutral-800 bg-neutral-900/90 shadow-2xl shadow-black backdrop-blur-xl">
+      <div className={`mx-auto transition-all duration-300 ${isEmbedded ? 'max-w-md py-6 px-3' : isStandalone ? 'w-full px-0 py-0' : deviceFrameMode === 'mobile' ? 'max-w-md py-16 px-3' : 'max-w-4xl py-20 px-6'}`}>
+        <article className={`overflow-hidden bg-neutral-950 shadow-2xl shadow-black ${isStandalone ? 'min-h-screen w-full rounded-none border-0' : 'rounded-3xl border border-neutral-800'}`}>
 
           {/* HERO COVER HEADER */}
-          <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full overflow-hidden bg-neutral-950">
+          <div className={`relative w-full overflow-hidden bg-neutral-950 ${isStandalone ? 'h-[100dvh] min-h-[620px]' : 'aspect-[3/4] sm:aspect-[4/5]'}`}>
             <img
               src={invitation.coverImage}
               alt={invitation.title}
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-center"
               referrerPolicy="no-referrer"
             />
             {/* Luxury gradient scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/95 via-neutral-950/30 to-black/10" />
 
             {/* Overlaid Header Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 text-center space-y-4">
-              <span className="font-cinzel text-xs font-semibold uppercase tracking-widest text-amber-300">
+              <span className="font-cinzel text-xs font-semibold uppercase tracking-widest" style={{ color: invitation.primaryColor || '#d4af37' }}>
                 {invitation.headline}
               </span>
 
@@ -412,7 +413,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
                 {invitation.hostNames}
               </h1>
 
-              <div className="mx-auto h-0.5 w-16 bg-amber-400 my-2" />
+              <div className="mx-auto my-2 h-0.5 w-16" style={{ backgroundColor: invitation.primaryColor || '#d4af37' }} />
 
               <p className="font-cinzel text-sm sm:text-base tracking-wider text-neutral-200">
                 {invitation.eventDate} · {invitation.eventTime} HRS
@@ -428,12 +429,12 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
 
             {/* COUNTDOWN TIMER */}
             <div className="rounded-2xl border border-amber-500/20 bg-neutral-950/80 p-6 text-center shadow-inner">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-amber-400">
+              <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: invitation.primaryColor || '#d4af37' }}>
                 Cuenta Regresiva
               </span>
               <div className="mt-4 grid grid-cols-4 gap-2 sm:gap-4 max-w-sm mx-auto">
                 <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-3">
-                  <span className="font-playfair text-2xl sm:text-3xl font-bold text-amber-300 tabular-nums">
+                  <span className="font-playfair text-2xl sm:text-3xl font-bold tabular-nums" style={{ color: invitation.primaryColor || '#d4af37' }}>
                     {timeLeft.days}
                   </span>
                   <p className="text-[10px] uppercase tracking-wider text-neutral-400 mt-1">Días</p>
