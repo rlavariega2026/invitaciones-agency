@@ -1,0 +1,6 @@
+{
+  "name": "LAV Invitations - Plataforma Premium de Invitaciones Digitales",
+  "description": "Crea invitaciones digitales interactivas para bodas, XV años, fiestas infantiles y eventos sociales con música, animaciones, RSVP y confirmación por WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
