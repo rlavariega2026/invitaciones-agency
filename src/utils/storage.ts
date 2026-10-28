@@ -93,6 +93,33 @@ export const saveInvitations = (invitations: Invitation[]): void => {
   }
 };
 
+const INVITATION_API_URL = `${import.meta.env.BASE_URL}api/invitations.php`;
+
+export const saveInvitationToServer = async (invitation: Invitation): Promise<void> => {
+  const response = await fetch(INVITATION_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(invitation),
+  });
+  const result = await response.json().catch(() => null);
+  if (!response.ok || !result?.success) {
+    throw new Error(result?.error || `No se pudo guardar la invitación (HTTP ${response.status}).`);
+  }
+  saveOrUpdateInvitation(invitation);
+};
+
+export const fetchInvitationFromServer = async (slug: string): Promise<Invitation | undefined> => {
+  const response = await fetch(`${INVITATION_API_URL}?slug=${encodeURIComponent(slug)}`, {
+    headers: { Accept: 'application/json' },
+  });
+  if (response.status === 404) return undefined;
+  const result = await response.json().catch(() => null);
+  if (!response.ok || !result?.success || !result?.invitation) {
+    throw new Error(result?.error || `No se pudo cargar la invitación (HTTP ${response.status}).`);
+  }
+  return result.invitation as Invitation;
+};
+
 export const getInvitationBySlug = (slug: string): Invitation | undefined => {
   const list = getStoredInvitations();
   return list.find((item) => item.slug === slug || item.id === slug);
