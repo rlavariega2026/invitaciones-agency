@@ -172,12 +172,6 @@ export default function App() {
     return (
       <InvitationViewer
         invitation={currentViewInvitation}
-        onBackToHome={handleBackToHome}
-        onEditInvitation={(inv) => {
-          setInvitationToEdit(inv);
-          setTemplateToCustomize(null);
-          setCurrentView('editor');
-        }}
         isStandalone={true}
       />
     );
