@@ -73,6 +73,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
   hideFloatingHeader = false,
 }) => {
   const isBookTemplate = invitation?.templateId === 'tmpl-erase-una-vez-book' || invitation?.style === 'premium_book';
+  const isCinderellaTemplate = invitation?.templateId === 'tmpl-xv-cenicienta-celeste';
   const [useBookMode, setUseBookMode] = useState<boolean>(isBookTemplate);
 
   // Personalized guest URL support (?guest=Familia+Perez&pases=3)
@@ -239,7 +240,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
   return (
     <div
       style={{ '--invitation-accent': invitation.primaryColor || '#d4af37' } as React.CSSProperties}
-      className={`relative ${isEmbedded ? 'h-full w-full overflow-y-auto' : isStandalone ? 'min-h-screen w-full' : 'min-h-screen'} bg-neutral-950 text-neutral-100 selection:bg-amber-500/20`}
+      className={`relative ${isEmbedded ? 'h-full w-full overflow-y-auto' : isStandalone ? 'min-h-screen w-full' : 'min-h-screen'} ${isCinderellaTemplate ? 'bg-[#07152f] text-slate-100 selection:bg-sky-300/30' : 'bg-neutral-950 text-neutral-100 selection:bg-amber-500/20'}`} 
     >
       {/* Background celebration particles */}
       <CelebrationParticles type={invitation.particlesEffect || 'petals'} intensity="gentle" isEmbedded={isEmbedded} />
@@ -344,7 +345,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
       {/* 1. ENVELOPE OPENING OVERLAY (Unsealing experience) */}
       {/* ------------------------------------------------------------- */}
       {!isOpened && (
-        <div className={`${isEmbedded ? 'absolute' : 'fixed'} inset-0 z-40 isolate flex min-h-[100dvh] items-end justify-center overflow-hidden bg-neutral-950 text-center`}>
+        <div className={`${isEmbedded ? 'absolute' : 'fixed'} inset-0 z-40 isolate flex min-h-[100dvh] items-end justify-center overflow-hidden ${isCinderellaTemplate ? 'bg-[#07152f]' : 'bg-neutral-950'} text-center`}>
           <img
             src={invitation.coverImage}
             alt=""
@@ -352,7 +353,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
             className="absolute inset-0 h-full w-full object-cover object-center"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/20 to-black/90" />
+          <div className={`absolute inset-0 ${isCinderellaTemplate ? 'bg-gradient-to-b from-[#07152f]/15 via-[#07152f]/45 to-[#07152f]/95' : 'bg-gradient-to-b from-black/25 via-black/20 to-black/90'}`} />
           <div className="relative z-10 mx-auto flex min-h-[100dvh] w-full max-w-2xl flex-col items-center justify-end px-6 pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-16 sm:justify-center sm:pb-12">
             <span className="mb-4 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/80">
               Invitación digital · {invitation.category === 'xv_anos' ? 'Mis XV años' : invitation.category.replace(/_/g, ' ')}
@@ -392,7 +393,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
       {/* 2. INVITATION CONTENT CONTAINER */}
       {/* ------------------------------------------------------------- */}
       <div className={`mx-auto transition-all duration-300 ${isEmbedded ? 'max-w-md py-6 px-3' : isStandalone ? 'w-full px-0 py-0' : deviceFrameMode === 'mobile' ? 'max-w-md py-16 px-3' : 'max-w-4xl py-20 px-6'}`}>
-        <article className={`overflow-hidden bg-neutral-950 shadow-2xl shadow-black ${isStandalone ? 'min-h-screen w-full rounded-none border-0' : 'rounded-3xl border border-neutral-800'}`}>
+        <article className={`overflow-hidden ${isCinderellaTemplate ? 'bg-[#091a36] shadow-[0_0_70px_rgba(125,180,255,0.16)]' : 'bg-neutral-950 shadow-2xl shadow-black'} ${isStandalone ? 'min-h-screen w-full rounded-none border-0' : isCinderellaTemplate ? 'rounded-3xl border border-sky-200/30' : 'rounded-3xl border border-neutral-800'}`} >
 
           {/* HERO COVER HEADER */}
           <div className={`relative w-full overflow-hidden bg-neutral-950 ${isStandalone ? 'h-[100dvh] min-h-[620px]' : 'aspect-[3/4] sm:aspect-[4/5]'}`}>
@@ -403,7 +404,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
               referrerPolicy="no-referrer"
             />
             {/* Luxury gradient scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/95 via-neutral-950/30 to-black/10" />
+            <div className={`absolute inset-0 ${isCinderellaTemplate ? 'bg-gradient-to-t from-[#06142c]/98 via-[#102a50]/45 to-[#07152f]/5' : 'bg-gradient-to-t from-neutral-950/95 via-neutral-950/30 to-black/10'}`} />
 
             {/* Overlaid Header Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 text-center space-y-4">
@@ -427,22 +428,23 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
           </div>
 
           {/* MAIN BODY SECTIONS */}
-          <div className="p-6 sm:p-10 space-y-14">
+          <div className={`p-6 sm:p-10 space-y-14 ${isCinderellaTemplate ? 'bg-gradient-to-b from-[#0b1d3b] via-[#0a1831] to-[#07152f]' : ''}`}>
+            {isCinderellaTemplate && <div className="text-center -mb-7"><span className="text-sky-200/90 text-[10px] uppercase tracking-[0.45em]">✧ Una noche de ensueño ✧</span><div className="mx-auto mt-3 h-px w-28 bg-gradient-to-r from-transparent via-sky-200/80 to-transparent" /></div>}
 
             {/* COUNTDOWN TIMER */}
-            <div className="rounded-2xl border border-amber-500/20 bg-neutral-950/80 p-6 text-center shadow-inner">
+            <div className={`rounded-2xl p-6 text-center shadow-inner ${isCinderellaTemplate ? 'border border-sky-200/30 bg-[#102548]/80 shadow-[inset_0_0_28px_rgba(125,180,255,0.08)]' : 'border border-amber-500/20 bg-neutral-950/80'}`} >
               <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: invitation.primaryColor || '#d4af37' }}>
                 Cuenta Regresiva
               </span>
               <div className="mt-4 grid grid-cols-4 gap-2 sm:gap-4 max-w-sm mx-auto">
-                <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-3">
+                <div className={`rounded-xl p-3 ${isCinderellaTemplate ? 'border border-sky-100/20 bg-[#0a1a34]' : 'border border-neutral-800 bg-neutral-900/80'}`} >
                   <span className="font-playfair text-2xl sm:text-3xl font-bold tabular-nums" style={{ color: invitation.primaryColor || '#d4af37' }}>
                     {timeLeft.days}
                   </span>
                   <p className="text-[10px] uppercase tracking-wider text-neutral-400 mt-1">Días</p>
                 </div>
                 <div className="rounded-xl border border-neutral-800 bg-neutral-900/80 p-3">
-                  <span className="font-playfair text-2xl sm:text-3xl font-bold text-amber-300 tabular-nums">
+                  <span className={`font-playfair text-2xl sm:text-3xl font-bold tabular-nums ${isCinderellaTemplate ? 'text-sky-200' : 'text-amber-300'}`} >
                     {timeLeft.hours}
                   </span>
                   <p className="text-[10px] uppercase tracking-wider text-neutral-400 mt-1">Horas</p>
@@ -476,7 +478,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
 
             {/* PARENTS & GODPARENTS HONORS */}
             {(invitation.parentsNames || invitation.godparentsNames) && (
-              <div className="space-y-4 rounded-2xl border border-neutral-800/80 bg-neutral-950/40 p-6 text-center text-xs">
+              <div className={`space-y-4 rounded-2xl p-6 text-center text-xs ${isCinderellaTemplate ? 'border border-sky-100/20 bg-[#102548]/70' : 'border border-neutral-800/80 bg-neutral-950/40'}`} >
                 {invitation.parentsNames && (
                   <div>
                     <span className="font-semibold uppercase tracking-wider text-amber-400 text-[10px] block mb-1">
