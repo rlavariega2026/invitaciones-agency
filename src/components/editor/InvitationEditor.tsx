@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import demoKidsSpaceImage from '../../assets/images/demo_kids_space_1792595402717.jpg';
+import demoQuincePortraitImage from '../../assets/images/demo_quince_portrait_1792595402137.jpg';
+import demoWeddingPortraitImage from '../../assets/images/demo_wedding_portrait_1792595402081.jpg';
+import eraseUnaVezBookImage from '../../assets/images/erase_una_vez_book_preview_1792605109334.jpg';
+import heroInvitationsImage from '../../assets/images/hero_invitations_showcase_1792595400987.jpg';
 import {
   Sparkles,
   ArrowRight,
@@ -52,11 +57,11 @@ interface InvitationEditorProps {
 }
 
 const CURATED_SAMPLE_IMAGES = [
-  { label: 'Libro Érase una vez — Encuadernación', url: '/src/assets/images/erase_una_vez_book_preview_1792605109334.jpg' },
-  { label: 'Boda Italiana al Atardecer', url: '/src/assets/images/demo_wedding_portrait_1792595402081.jpg' },
-  { label: 'Papelería Nupcial de Lujo & Anillos', url: '/src/assets/images/hero_invitations_showcase_1792595400987.jpg' },
-  { label: 'XV Años Esmeralda Real', url: '/src/assets/images/demo_quince_portrait_1792595402137.jpg' },
-  { label: 'Misión Espacial Infantil', url: '/src/assets/images/demo_kids_space_1792595402717.jpg' },
+  { label: 'Libro Érase una vez — Encuadernación', url: eraseUnaVezBookImage },
+  { label: 'Boda Italiana al Atardecer', url: demoWeddingPortraitImage },
+  { label: 'Papelería Nupcial de Lujo & Anillos', url: heroInvitationsImage },
+  { label: 'XV Años Esmeralda Real', url: demoQuincePortraitImage },
+  { label: 'Misión Espacial Infantil', url: demoKidsSpaceImage },
   { label: 'Banquete & Luces de Jardín', url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80' },
   { label: 'Flores Blancas & Champagne', url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80' },
 ];
@@ -100,13 +105,13 @@ export const InvitationEditor: React.FC<InvitationEditorProps> = ({
   const [coverImage, setCoverImage] = useState(
     initialInvitation?.coverImage ||
     initialTemplate?.previewImage ||
-    '/src/assets/images/demo_wedding_portrait_1792595402081.jpg'
+    demoWeddingPortraitImage
   );
   const [customImageUrl, setCustomImageUrl] = useState('');
   const [galleryImages, setGalleryImages] = useState<string[]>(
     initialInvitation?.galleryImages || [
-      '/src/assets/images/demo_wedding_portrait_1792595402081.jpg',
-      '/src/assets/images/hero_invitations_showcase_1792595400987.jpg',
+      demoWeddingPortraitImage,
+      heroInvitationsImage,
     ]
   );
 
@@ -273,7 +278,7 @@ export const InvitationEditor: React.FC<InvitationEditorProps> = ({
       setStyle('premium_book');
       setEnvelopeAnimation('book_open');
       setFontHeading('Cormorant Garamond');
-      setCoverImage('/src/assets/images/erase_una_vez_book_preview_1792605109334.jpg');
+      setCoverImage(eraseUnaVezBookImage);
       setParticlesEffect('petals');
       setBookCoverStyle('luxury_linen');
     } else if (tmpl.category === 'boda') {
