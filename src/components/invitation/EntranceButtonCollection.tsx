@@ -151,6 +151,25 @@ export const EntranceButton: React.FC<EntranceButtonProps> = ({
   const displayText = text?.trim() || 'Tienes una invitación';
   const preset = getButtonPresetById(design);
 
+  // Dedicated, accessible entrance CTA for the Cinderella / crystal-ball template.
+  if (design === 'royal_curtain') {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className={`cinderella-entry-button ${className}`}
+        aria-label={displayText}
+      >
+        <span className="cinderella-entry-gem" aria-hidden="true"><Gem className="h-5 w-5" /></span>
+        <span className="cinderella-entry-copy">
+          <span className="cinderella-entry-title">{displayText}</span>
+          <span className="cinderella-entry-subtitle">Entrar al baile</span>
+        </span>
+        <Sparkles className="cinderella-entry-sparkle h-4 w-4" aria-hidden="true" />
+      </button>
+    );
+  }
+
   // 1. ENVELOPE FLAP SHAPE
   if (preset.shape === 'envelope' || design === 'envelope_flap') {
     return (
