@@ -47,18 +47,18 @@ jobs:
             cp public/.htaccess dist/.htaccess
           else
             cat > dist/.htaccess <<'EOF'
-Options -MultiViews
-DirectoryIndex index.html
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /invitaciones/
-  RewriteRule ^$ index.html [END]
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [END]
-  RewriteRule ^ index.html [END]
-</IfModule>
-EOF
+          Options -MultiViews
+          DirectoryIndex index.html
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /invitaciones/
+            RewriteRule ^$ index.html [END]
+            RewriteCond %{REQUEST_FILENAME} -f [OR]
+            RewriteCond %{REQUEST_FILENAME} -d
+            RewriteRule ^ - [END]
+            RewriteRule ^ index.html [END]
+          </IfModule>
+          EOF
           fi
           test -f dist/.htaccess
           mkdir -p package/invitaciones
