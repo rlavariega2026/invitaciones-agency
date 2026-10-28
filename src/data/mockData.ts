@@ -384,7 +384,7 @@ export const INITIAL_TEMPLATES: Template[] = [
     entranceButtonDesign: 'wax_seal',
   },
   {
-    id: 'tmpl-xv-diamante-jardín',
+    id: 'tmpl-xv-diamante-jardin',
     name: 'Diamante · Jardín de Jaretzi',
     category: 'xv_anos',
     style: 'rose_gold',
