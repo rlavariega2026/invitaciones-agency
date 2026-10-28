@@ -66,6 +66,8 @@ jobs:
           test -f package/invitaciones/index.html
           grep -q '/invitaciones/assets/' package/invitaciones/index.html
           test -d package/invitaciones/assets
+          test -f package/invitaciones/api/invitations.php
+          test -f package/invitaciones/api/data/.htaccess
           echo "Package ready: extract artifact into the domain's public_html root."
 
       - name: Upload Hostinger artifact
