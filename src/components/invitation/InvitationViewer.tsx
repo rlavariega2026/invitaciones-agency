@@ -280,27 +280,29 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
 
         {/* Right: Sound toggle & Device View toggle */}
         <div className="pointer-events-auto flex items-center gap-2">
-          {/* Device viewport frame mode (Desktop only) */}
-          <div className="hidden lg:flex items-center rounded-full border border-neutral-700/80 bg-neutral-900/90 p-1 backdrop-blur-md shadow-lg">
-            <button
-              onClick={() => setDeviceFrameMode('mobile')}
-              className={`rounded-full p-1.5 text-xs transition-colors ${
-                deviceFrameMode === 'mobile' ? 'bg-amber-500 text-neutral-950 font-bold' : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-              title="Vista Móvil (Formato WhatsApp)"
-            >
-              <Smartphone className="h-3.5 w-3.5" />
-            </button>
-            <button
-              onClick={() => setDeviceFrameMode('full')}
-              className={`rounded-full p-1.5 text-xs transition-colors ${
-                deviceFrameMode === 'full' ? 'bg-amber-500 text-neutral-950 font-bold' : 'text-neutral-400 hover:text-neutral-200'
-              }`}
-              title="Vista Pantalla Completa"
-            >
-              <Monitor className="h-3.5 w-3.5" />
-            </button>
-          </div>
+          {/* Device viewport switcher is only for internal previews, never for guests. */}
+          {!isStandalone && (
+            <div className="hidden lg:flex items-center rounded-full border border-neutral-700/80 bg-neutral-900/90 p-1 backdrop-blur-md shadow-lg">
+              <button
+                onClick={() => setDeviceFrameMode('mobile')}
+                className={`rounded-full p-1.5 text-xs transition-colors ${
+                  deviceFrameMode === 'mobile' ? 'bg-amber-500 text-neutral-950 font-bold' : 'text-neutral-400 hover:text-neutral-200'
+                }`}
+                title="Vista Móvil (Formato WhatsApp)"
+              >
+                <Smartphone className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={() => setDeviceFrameMode('full')}
+                className={`rounded-full p-1.5 text-xs transition-colors ${
+                  deviceFrameMode === 'full' ? 'bg-amber-500 text-neutral-950 font-bold' : 'text-neutral-400 hover:text-neutral-200'
+                }`}
+                title="Vista Pantalla Completa"
+              >
+                <Monitor className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
 
           {/* Music player toggle */}
           {invitation.musicTrackId && invitation.musicTrackId !== 'none' && (
