@@ -40,7 +40,7 @@ import {
   ItineraryItem,
   GiftRegistryItem,
 } from '../../types';
-import { saveOrUpdateInvitation } from '../../utils/storage';
+import { saveInvitationToServer } from '../../utils/storage';
 import { generateQrSvgDataUri } from '../../utils/calendarAndQr';
 import { CelebrationParticles } from '../common/CelebrationParticles';
 import { compressAndReadFile, compressMultipleFiles } from '../../utils/imageUpload';
@@ -373,11 +373,18 @@ export const InvitationEditor: React.FC<InvitationEditorProps> = ({
   };
 
   // Publish handler
-  const handlePublish = () => {
+  const handlePublish = async () => {
     const finalInvite = buildCurrentInvitation();
-    saveOrUpdateInvitation(finalInvite);
-    setPublishedData(finalInvite);
-    setCurrentStep(9);
+    try {
+      await saveInvitationToServer(finalInvite);
+      setPublishedData(finalInvite);
+      setCurrentStep(9);
+    } catch (error) {
+      console.error('No se pudo publicar la invitación:', error);
+      window.alert(error instanceof Error
+        ? `No se pudo publicar la invitación: ${error.message}`
+        : 'No se pudo publicar la invitación. Verifica que los archivos de la versión nueva estén publicados en Hostinger.');
+    }
   };
 
   const currentPreviewData = buildCurrentInvitation();
