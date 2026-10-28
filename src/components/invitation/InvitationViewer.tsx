@@ -240,7 +240,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
   return (
     <div
       style={{ '--invitation-accent': invitation.primaryColor || '#d4af37' } as React.CSSProperties}
-      className={`relative ${isEmbedded ? 'h-full w-full overflow-y-auto' : isStandalone ? 'min-h-screen w-full' : 'min-h-screen'} ${isCinderellaTemplate ? 'bg-[#07152f] text-slate-100 selection:bg-sky-300/30' : 'bg-neutral-950 text-neutral-100 selection:bg-amber-500/20'}`} 
+      className={`relative ${isEmbedded ? 'h-full w-full overflow-y-auto' : isStandalone ? 'min-h-screen w-full' : 'min-h-screen'} ${isCinderellaTemplate ? 'cinderella-skin bg-[#07152f] text-slate-100 selection:bg-sky-300/30' : 'bg-neutral-950 text-neutral-100 selection:bg-amber-500/20'}`} 
     >
       {/* Background celebration particles */}
       <CelebrationParticles type={invitation.particlesEffect || 'petals'} intensity="gentle" isEmbedded={isEmbedded} />
@@ -380,6 +380,7 @@ export const InvitationViewer: React.FC<InvitationViewerProps> = ({
                 design={invitation.entranceButtonDesign || (invitation.envelopeAnimation as any) || 'wax_seal'}
                 text={invitation.entranceButtonText || 'Abrir invitación'}
                 onClick={handleOpenEnvelope}
+                className={isCinderellaTemplate ? 'cinderella-entrance' : ''}
               />
             </div>
             <p className="mt-4 text-[10px] uppercase tracking-[0.18em] text-white/65">
