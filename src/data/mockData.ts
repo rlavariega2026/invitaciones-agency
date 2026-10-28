@@ -74,6 +74,26 @@ export const INITIAL_TEMPLATES: Template[] = [
     defaultMusic: 'acoustic_romance',
   },
 
+  // XV AÑOS — inspirada en la invitación Cenicienta de referencia
+  {
+    id: 'tmpl-xv-cenicienta-celeste',
+    name: 'Cenicienta · Noche de Cristal',
+    category: 'xv_anos',
+    style: 'royal_lavender',
+    description: 'Invitación de quince años inspirada en un cuento de princesa: azul hielo, destellos de cristal, tipografía romántica, portada fotográfica editable y secciones completas para ceremonia, recepción, itinerario y confirmación.',
+    previewImage: demoQuincePortraitImage,
+    tags: ['Cenicienta', 'Azul hielo', 'Princesa', 'Portada editable'],
+    isPopular: true,
+    isNew: true,
+    defaultHeadline: 'Mis Quince Años',
+    defaultDressCode: 'Formal · Azul, plata y tonos de gala',
+    defaultMusic: 'quince_waltz',
+    primaryColor: '#b9d9ff',
+    fontHeading: 'Cormorant Garamond',
+    envelopeAnimation: 'royal_curtain',
+    entranceButtonDesign: 'royal_curtain',
+  },
+
   // XV AÑOS
   {
     id: 'tmpl-xv-esmeralda',
