@@ -1,4 +1,9 @@
 import { Invitation, Template, PricingPlan, Coupon } from '../types';
+import demoKidsSpaceImage from '../assets/images/demo_kids_space_1792595402717.jpg';
+import demoQuincePortraitImage from '../assets/images/demo_quince_portrait_1792595402137.jpg';
+import demoWeddingPortraitImage from '../assets/images/demo_wedding_portrait_1792595402081.jpg';
+import eraseUnaVezBookImage from '../assets/images/erase_una_vez_book_preview_1792605109334.jpg';
+import heroInvitationsImage from '../assets/images/hero_invitations_showcase_1792595400987.jpg';
 
 export const INITIAL_TEMPLATES: Template[] = [
   // PLANTILLA EXCLUSIVA PREMIUM BOOK
@@ -8,7 +13,7 @@ export const INITIAL_TEMPLATES: Template[] = [
     category: 'boda',
     style: 'premium_book',
     description: 'Invitación interactiva en forma de libro de recuerdos encuadernado de alta gama. Hojéalo página a página con animaciones 3D realistas, múltiples composiciones de fotos, dedicatorias y detalles que enamoran.',
-    previewImage: '/src/assets/images/erase_una_vez_book_preview_1792605109334.jpg',
+    previewImage: eraseUnaVezBookImage,
     tags: ['Libro Interactivo', 'Páginas 3D', 'Storybook', 'Exclusivo'],
     isPopular: true,
     isNew: true,
@@ -437,10 +442,10 @@ export const INITIAL_DEMOS: Invitation[] = [
     venueName: 'Hacienda San José de las Palmas',
     venueAddress: 'Km 14.5 Carretera Real del Monte, Valle Central, México',
     mapEmbedQuery: 'Hacienda San Jose de las Palmas',
-    coverImage: '/src/assets/images/demo_wedding_portrait_1792595402081.jpg',
+    coverImage: demoWeddingPortraitImage,
     galleryImages: [
-      '/src/assets/images/demo_wedding_portrait_1792595402081.jpg',
-      '/src/assets/images/hero_invitations_showcase_1792595400987.jpg',
+      demoWeddingPortraitImage,
+      heroInvitationsImage,
       'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
     ],
@@ -496,9 +501,9 @@ export const INITIAL_DEMOS: Invitation[] = [
     venueName: 'Palacio Real Terraza & Grand Ballroom',
     venueAddress: 'Av. Las Palmas 2400, Zona Diamante, Ciudad de México',
     mapEmbedQuery: 'Av Las Palmas 2400 Ciudad de Mexico',
-    coverImage: '/src/assets/images/demo_quince_portrait_1792595402137.jpg',
+    coverImage: demoQuincePortraitImage,
     galleryImages: [
-      '/src/assets/images/demo_quince_portrait_1792595402137.jpg',
+      demoQuincePortraitImage,
       'https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
     ],
@@ -552,9 +557,9 @@ export const INITIAL_DEMOS: Invitation[] = [
     venueName: 'Planetario Aventura & Jardín Galáctico',
     venueAddress: 'Calle Apolo 11, Col. Jardines del Espacio, Monterrey, N.L.',
     mapEmbedQuery: 'Planetario Monterrey',
-    coverImage: '/src/assets/images/demo_kids_space_1792595402717.jpg',
+    coverImage: demoKidsSpaceImage,
     galleryImages: [
-      '/src/assets/images/demo_kids_space_1792595402717.jpg',
+      demoKidsSpaceImage,
       'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
     ],
     style: 'cosmic_fun',
@@ -607,10 +612,10 @@ export const INITIAL_DEMOS: Invitation[] = [
     venueName: 'Casona Virreinal San Miguel & Jardín de los Enamorados',
     venueAddress: 'Calle de los Suspiros 24, Centro Histórico, San Miguel de Allende, Gto.',
     mapEmbedQuery: 'San Miguel de Allende Guanajuato',
-    coverImage: '/src/assets/images/erase_una_vez_book_preview_1792605109334.jpg',
+    coverImage: eraseUnaVezBookImage,
     galleryImages: [
-      '/src/assets/images/demo_wedding_portrait_1792595402081.jpg',
-      '/src/assets/images/hero_invitations_showcase_1792595400987.jpg',
+      demoWeddingPortraitImage,
+      heroInvitationsImage,
       'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=800&q=80',
