@@ -61,11 +61,11 @@ jobs:
           EOF
           fi
           test -f dist/.htaccess
-          mkdir -p package/invitaciones
-          cp -a dist/. package/invitaciones/
-          test -f package/invitaciones/index.html
-          grep -q '/Invitaciones/assets/' package/invitaciones/index.html
-          test -d package/invitaciones/assets
+          mkdir -p package/Invitaciones
+          cp -a dist/. package/Invitaciones/
+          test -f package/Invitaciones/index.html
+          grep -q '/Invitaciones/assets/' package/Invitaciones/index.html
+          test -d package/Invitaciones/assets
           echo "Package ready: extract artifact into the domain's public_html root."
 
       - name: Upload Hostinger artifact
