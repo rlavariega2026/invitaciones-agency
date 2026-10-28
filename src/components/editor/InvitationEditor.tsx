@@ -389,7 +389,7 @@ export const InvitationEditor: React.FC<InvitationEditorProps> = ({
 
   const currentPreviewData = buildCurrentInvitation();
   const invitationBasePath = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
-  const shareUrl = `${window.location.origin}${invitationBasePath}/i/${encodeURIComponent(publishedData?.slug || currentPreviewData.slug)}`;
+  const shareUrl = `${window.location.origin}${invitationBasePath}/#/invitation/${encodeURIComponent(publishedData?.slug || currentPreviewData.slug)}`;
   const qrSvgUri = generateQrSvgDataUri(shareUrl);
 
   const handleCopyLink = () => {
