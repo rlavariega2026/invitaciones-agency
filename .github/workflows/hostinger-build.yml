@@ -1,0 +1,72 @@
+name: Build for Hostinger
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+        continue-on-error: true
+
+      - name: Verify app files
+        run: |
+          test -f package.json || { echo "::error::Falta package.json. Sube el contenido del ZIP de AI Studio a la raíz del repositorio."; exit 1; }
+          test -f index.html || { echo "::error::Falta index.html en la raíz del proyecto."; exit 1; }
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
+
+      - name: Build for Hostinger
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /invitaciones/
+
+      - name: Include Hostinger routing configuration
+        run: |
+          test -f dist/index.html
+          if [ -f public/.htaccess ]; then
+            cp public/.htaccess dist/.htaccess
+          else
+            cat > dist/.htaccess <<'EOF'
+          Options -MultiViews
+          DirectoryIndex index.html
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /invitaciones/
+            RewriteRule ^$ index.html [END]
+            RewriteCond %{REQUEST_FILENAME} -f [OR]
+            RewriteCond %{REQUEST_FILENAME} -d
+            RewriteRule ^ - [END]
+            RewriteRule ^ index.html [END]
+          </IfModule>
+          EOF
+          fi
+          test -f dist/.htaccess
+
+      - name: Upload Hostinger build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hostinger-invitaciones-agency-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
