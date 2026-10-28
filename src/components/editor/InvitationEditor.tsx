@@ -199,18 +199,18 @@ export const InvitationEditor: React.FC<InvitationEditorProps> = ({
   const [style, setStyle] = useState<TemplateStyle>(
     initialInvitation?.style || initialTemplate?.style || (isInitialBook ? 'premium_book' : 'luxury_gold')
   );
-  const [primaryColor, setPrimaryColor] = useState(initialInvitation?.primaryColor || '#d4af37');
+  const [primaryColor, setPrimaryColor] = useState(initialInvitation?.primaryColor || initialTemplate?.primaryColor || '#d4af37');
   const [fontHeading, setFontHeading] = useState<'Cinzel' | 'Playfair Display' | 'Cormorant Garamond' | 'Plus Jakarta Sans'>(
-    initialInvitation?.fontHeading || (isInitialBook ? 'Cormorant Garamond' : 'Cinzel')
+    initialInvitation?.fontHeading || initialTemplate?.fontHeading || (isInitialBook ? 'Cormorant Garamond' : 'Cinzel')
   );
   const [envelopeAnimation, setEnvelopeAnimation] = useState<EnvelopeAnimationType>(
-    initialInvitation?.envelopeAnimation || (isInitialBook ? 'book_open' : 'wax_seal')
+    initialInvitation?.envelopeAnimation || initialTemplate?.envelopeAnimation || (isInitialBook ? 'book_open' : 'wax_seal')
   );
   const [bookCoverStyle, setBookCoverStyle] = useState<'romantic' | 'vintage' | 'editorial' | 'minimalist' | 'modern' | 'luxury_linen'>(
     initialInvitation?.bookCoverStyle || 'luxury_linen'
   );
   const [entranceButtonDesign, setEntranceButtonDesign] = useState<EntranceButtonDesign>(
-    initialInvitation?.entranceButtonDesign || (isInitialBook ? 'gold_foil_card' : 'wax_seal')
+    initialInvitation?.entranceButtonDesign || initialTemplate?.entranceButtonDesign || (isInitialBook ? 'gold_foil_card' : 'wax_seal')
   );
   const [entranceButtonText, setEntranceButtonText] = useState<string>(
     initialInvitation?.entranceButtonText || 'Tienes una invitación'
