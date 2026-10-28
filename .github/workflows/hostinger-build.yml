@@ -67,4 +67,5 @@ jobs:
           name: hostinger-invitaciones-agency-dist
           path: dist/
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 14
