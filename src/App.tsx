@@ -19,6 +19,8 @@ import {
   getStoredPricing,
   getStoredCoupons,
   getInvitationBySlug,
+  fetchInvitationFromServer,
+  saveOrUpdateInvitation,
 } from './utils/storage';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -82,6 +84,13 @@ export default function App() {
       if (slug) {
         setActiveInvitationSlug(slug);
         setCurrentView('invitation-view');
+        fetchInvitationFromServer(slug)
+          .then((remoteInvitation) => {
+            if (!remoteInvitation) return;
+            saveOrUpdateInvitation(remoteInvitation);
+            setInvitations(getStoredInvitations());
+          })
+          .catch((error) => console.error('No se pudo recuperar la invitación publicada:', error));
         return;
       }
 
