@@ -35,8 +35,22 @@ import { AdminHub } from './components/admin/AdminHub';
 
 type ViewType = 'home' | 'catalog' | 'demos' | 'pricing' | 'editor' | 'admin' | 'invitation-view';
 
+const getInvitationSlugFromLocation = (): string | null => {
+  const path = window.location.pathname.replace(/\/+$/, '');
+  const match = path.match(/(?:^|\/)i\/([^/]+)$/);
+  if (match) {
+    try { return decodeURIComponent(match[1]); } catch { return match[1]; }
+  }
+  const hash = window.location.hash;
+  if (hash.startsWith('#/invitation/')) return decodeURIComponent(hash.slice('#/invitation/'.length).trim());
+  return null;
+};
+
+const getBasePath = () => (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+
 export default function App() {
-  const [currentView, setCurrentView] = useState<ViewType>('home');
+  const initialSlug = getInvitationSlugFromLocation();
+  const [currentView, setCurrentView] = useState<ViewType>(initialSlug ? 'invitation-view' : 'home');
   const [invitations, setInvitations] = useState<Invitation[]>(() => getStoredInvitations());
   const [templates, setTemplates] = useState<Template[]>(() => getStoredTemplates());
   const [rsvps, setRsvps] = useState<RSVPRecord[]>(() => getStoredRSVPs());
@@ -45,7 +59,7 @@ export default function App() {
 
   // Selected state for editor or viewer
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
-  const [activeInvitationSlug, setActiveInvitationSlug] = useState<string | null>(null);
+  const [activeInvitationSlug, setActiveInvitationSlug] = useState<string | null>(initialSlug);
   const [invitationToEdit, setInvitationToEdit] = useState<Invitation | null>(null);
   const [templateToCustomize, setTemplateToCustomize] = useState<Template | null>(null);
   const [chosenTier, setChosenTier] = useState<'esencial' | 'premium' | 'exclusivo'>('premium');
@@ -62,32 +76,39 @@ export default function App() {
   useEffect(() => {
     loadData();
 
-    // Check hash URL (e.g. #/invitation/demo-boda)
-    const handleHashChange = () => {
+    // Support clean, shareable invitation URLs (/invitaciones/i/:slug) and legacy hash links.
+    const syncRoute = () => {
+      const slug = getInvitationSlugFromLocation();
+      if (slug) {
+        setActiveInvitationSlug(slug);
+        setCurrentView('invitation-view');
+        return;
+      }
+
       const hash = window.location.hash;
-      if (hash.startsWith('#/invitation/')) {
-        const slug = hash.replace('#/invitation/', '').trim();
-        if (slug) {
-          setActiveInvitationSlug(slug);
-          setCurrentView('invitation-view');
-        }
-      } else if (hash === '#/admin') {
-        setCurrentView('admin');
-      } else if (hash === '#/editor') {
-        setCurrentView('editor');
+      if (hash === '#/admin') setCurrentView('admin');
+      else if (hash === '#/editor') setCurrentView('editor');
+      else {
+        setActiveInvitationSlug(null);
+        setCurrentView('home');
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    syncRoute();
+    window.addEventListener('hashchange', syncRoute);
+    window.addEventListener('popstate', syncRoute);
+    return () => {
+      window.removeEventListener('hashchange', syncRoute);
+      window.removeEventListener('popstate', syncRoute);
+    };
   }, []);
 
   // Top navigation handler
   const handleNavigate = (view: ViewType) => {
     setCurrentView(view);
     if (view === 'home' || view === 'catalog' || view === 'demos' || view === 'pricing') {
-      window.location.hash = '';
+      window.history.pushState({}, '', `${getBasePath() || ''}/`);
+      setActiveInvitationSlug(null);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
@@ -96,8 +117,8 @@ export default function App() {
   const handleOpenInvitation = (slug: string) => {
     setActiveInvitationSlug(slug);
     setCurrentView('invitation-view');
-    window.location.hash = `#/invitation/${slug}`;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.history.pushState({}, '', `${getBasePath()}/i/${encodeURIComponent(slug)}`);
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   // Customize from a template
@@ -133,14 +154,15 @@ export default function App() {
 
   // Return to portal from viewer or editor
   const handleBackToHome = () => {
-    window.location.hash = '';
+    window.history.pushState({}, '', `${getBasePath() || ''}/`);
+    setActiveInvitationSlug(null);
     setCurrentView('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Resolve currently active invitation for viewer
   const currentViewInvitation = activeInvitationSlug
-    ? getInvitationBySlug(activeInvitationSlug) || invitations[0]
+    ? getInvitationBySlug(activeInvitationSlug)
     : invitations[0];
 
   // -----------------------------------------------------------------
@@ -158,6 +180,19 @@ export default function App() {
         }}
         isStandalone={true}
       />
+    );
+  }
+
+  if (currentView === 'invitation-view' && !currentViewInvitation) {
+    return (
+      <main className="min-h-screen w-full bg-neutral-950 text-white flex items-center justify-center p-6 text-center">
+        <div className="max-w-sm space-y-4">
+          <p className="text-xs uppercase tracking-[0.25em] text-amber-300">Invitación digital</p>
+          <h1 className="font-playfair text-3xl">No encontramos esta invitación</h1>
+          <p className="text-sm leading-6 text-neutral-400">El enlace llegó a la invitación, pero este dispositivo no tiene sus datos guardados. La publicación compartida necesita una base de datos para que funcione en otros teléfonos.</p>
+          <button onClick={handleBackToHome} className="rounded-full bg-amber-400 px-5 py-3 text-sm font-semibold text-neutral-950">Volver al catálogo</button>
+        </div>
+      </main>
     );
   }
 
