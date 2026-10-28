@@ -23,7 +23,7 @@ jobs:
 
       - name: Verify app files
         run: |
-          test -f package.json || { echo "::error::Falta package.json. Sube el contenido del ZIP de AI Studio a la raíz del repositorio."; exit 1; }
+          test -f package.json || { echo "::error::Falta package.json."; exit 1; }
           test -f index.html || { echo "::error::Falta index.html en la raíz del proyecto."; exit 1; }
 
       - name: Install dependencies
@@ -39,33 +39,40 @@ jobs:
         env:
           VITE_BASE_PATH: /invitaciones/
 
-      - name: Include Hostinger routing configuration
+      - name: Prepare Hostinger folder structure
         run: |
+          set -eu
           test -f dist/index.html
           if [ -f public/.htaccess ]; then
             cp public/.htaccess dist/.htaccess
           else
             cat > dist/.htaccess <<'EOF'
-          Options -MultiViews
-          DirectoryIndex index.html
-          <IfModule mod_rewrite.c>
-            RewriteEngine On
-            RewriteBase /invitaciones/
-            RewriteRule ^$ index.html [END]
-            RewriteCond %{REQUEST_FILENAME} -f [OR]
-            RewriteCond %{REQUEST_FILENAME} -d
-            RewriteRule ^ - [END]
-            RewriteRule ^ index.html [END]
-          </IfModule>
-          EOF
+Options -MultiViews
+DirectoryIndex index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /invitaciones/
+  RewriteRule ^$ index.html [END]
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [END]
+  RewriteRule ^ index.html [END]
+</IfModule>
+EOF
           fi
           test -f dist/.htaccess
+          mkdir -p package/invitaciones
+          cp -a dist/. package/invitaciones/
+          test -f package/invitaciones/index.html
+          grep -q '/invitaciones/assets/' package/invitaciones/index.html
+          test -d package/invitaciones/assets
+          echo "Package ready: extract artifact into the domain's public_html root."
 
-      - name: Upload Hostinger build artifact
+      - name: Upload Hostinger artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hostinger-invitaciones-agency-dist
-          path: dist/
+          name: hostinger-invitaciones-agency
+          path: package/
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 14
